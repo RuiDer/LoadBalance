@@ -55,9 +55,24 @@ public class UserLoadBalance implements LoadBalance{
                 }
             }
         }
-        // 服务都被打满了,随机选一个
+        // 服务都被打满了,根据耗时选一个时间较短的服务端
         if(hasPermitArr.size() == 0){
-            return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
+            for(int index=0;index<size;index++){
+                ServerLoadInfo serverLoadInfo = UserLoadBalanceService.getServerLoadInfo(invokers.get(index));
+                if(serverLoadInfo != null){
+                    int weight = serverLoadInfo.getWeight();
+                        //根据耗时重新计算权重(基本权重*(1秒/单个请求耗时))
+                        int clientTimeAvgSpendCurr = serverLoadInfo.getAvgSpendTime();
+                        if(clientTimeAvgSpendCurr == 0){
+                            // 没有请求数据
+                            return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
+                        }
+                        weight = weight*(1000/clientTimeAvgSpendCurr);
+                        hasPermitArr.add(index);
+                        weightArr.add(weight);
+                        totalWeight = totalWeight+weight;
+                }
+            }
         }
         // 根据服务端配置和平均耗时计算权重
         int offsetWeight = ThreadLocalRandom.current().nextInt(totalWeight);
