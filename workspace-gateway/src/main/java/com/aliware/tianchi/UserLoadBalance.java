@@ -48,7 +48,7 @@ public class UserLoadBalance implements LoadBalance{
                         // 没有请求数据
                         return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
                     }
-                    weight = 1000/clientTimeAvgSpendCurr;
+                    weight = weight*(1000/clientTimeAvgSpendCurr);
                     hasPermitArr.add(index);
                     weightArr.add(weight);
                     totalWeight = totalWeight+weight;
