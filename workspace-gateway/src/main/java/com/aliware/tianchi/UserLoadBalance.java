@@ -48,7 +48,7 @@ public class UserLoadBalance implements LoadBalance{
                         // 没有请求数据
                         return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
                     }
-                    weight = weight*(1000/clientTimeAvgSpendCurr);
+                    weight = clientTimeAvgSpendCurr;
                     hasPermitArr.add(index);
                     weightArr.add(weight);
                     totalWeight = totalWeight+weight;
@@ -74,38 +74,4 @@ public class UserLoadBalance implements LoadBalance{
         return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
     }
     
-    
-//    @Override
-//    public <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException {
-//        
-//        int size = invokers.size();
-//        // 总权重
-//        int avgSpendTimeMinIndex = -1;
-//        int clientTimeAvgSpend = -1;
-//        for(int index=0;index<size;index++){
-//            
-//            ServerLoadInfo serverLoadInfo = UserLoadBalanceService.getServerLoadInfo(invokers.get(index));
-//            AtomicInteger limiter = UserLoadBalanceService.getAtomicInteger(invokers.get(index));
-//            if(limiter == null || limiter.get()<=0){
-//                continue;
-//            }
-//            if(serverLoadInfo != null){
-//                int clientTimeAvgSpendCurr = serverLoadInfo.getClientTimeAvgSpentTps();
-//                if(avgSpendTimeMinIndex == -1){
-//                    // 初始化
-//                    avgSpendTimeMinIndex = index;
-//                    clientTimeAvgSpend = clientTimeAvgSpendCurr;
-//                    continue;
-//                }
-//                if(clientTimeAvgSpendCurr<clientTimeAvgSpend){
-//                    avgSpendTimeMinIndex = index;
-//                    clientTimeAvgSpend = clientTimeAvgSpendCurr;
-//                }
-//            }
-//        }
-//        if(avgSpendTimeMinIndex != -1){
-//            return invokers.get(avgSpendTimeMinIndex);
-//        }
-//        return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
-//    }
 }
