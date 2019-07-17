@@ -4,99 +4,108 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class CustomerInfo {
 
-    private String quota = null;
-    private int providerThread = 0;
-    private volatile int weight = 0;
-    private AtomicLong reqCount = new AtomicLong(0);
-    private AtomicLong activeCount = new AtomicLong(0);
-    private AtomicLong spendTimeTotal = new AtomicLong(0);
+    private String env = null;
+    private volatile int serverWeight = 0;
+    private int providerAllThreads = 0;
+    private AtomicLong allReqCount = new AtomicLong(0);
     private volatile int avgSpendTime;
+    private AtomicLong allSpendTimeTotal = new AtomicLong(0);
+    private AtomicLong allActiveCount = new AtomicLong(0);
+
 
     public CustomerInfo() {
     }
 
-    public CustomerInfo(String quota, int providerThread) {
-        this.quota = quota;
-        this.providerThread = (int) (providerThread * 0.9);
-        if ("small".equals(quota)) {
-            this.weight = 4;
-        } else if ("medium".equals(quota)) {
-            this.weight = 9;
-        } else if ("large".equals(quota)) {
-            this.weight = 13;
-        } else {
-            this.weight = 1;
+    public CustomerInfo(String env, int providerThread) {
+        this.env = env;
+        this.providerAllThreads = (int) (providerThread * 0.9);
+        if ("large".equals(env)) {
+            this.serverWeight = 13;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        else if ("medium".equals(env)) {
+            this.serverWeight = 9;
+        } else if ("small".equals(env)) {
+            this.serverWeight = 4;
+        }
+        else {
+            this.serverWeight = 1;
         }
     }
 
-    public String getQuota() {
-
-        return quota;
+    public String getEnv() {
+        return env;
     }
 
-    public void setQuota(String quota) {
-
-        this.quota = quota;
+    public void setEnv(String env) {
+        this.env = env;
     }
 
-    public int getWeight() {
-
-        return weight;
+    public int getServerWeight() {
+        return serverWeight;
     }
 
-    public void setWeight(int weight) {
-
-        this.weight = weight;
+    public void setServerWeight(int serverWeight) {
+        this.serverWeight = serverWeight;
     }
 
-    public AtomicLong getReqCount() {
-
-        return reqCount;
+    public int getProviderAllThreads() {
+        return providerAllThreads;
     }
 
-    public void setReqCount(AtomicLong reqCount) {
-
-        this.reqCount = reqCount;
+    public void setProviderAllThreads(int providerAllThreads) {
+        this.providerAllThreads = providerAllThreads;
     }
 
-    public AtomicLong getActiveCount() {
-
-        return activeCount;
+    public AtomicLong getAllReqCount() {
+        return allReqCount;
     }
 
-    public void setActiveCount(AtomicLong activeCount) {
-
-        this.activeCount = activeCount;
-    }
-
-    public AtomicLong getSpendTimeTotal() {
-
-        return spendTimeTotal;
-    }
-
-    public void setSpendTimeTotal(AtomicLong spendTimeTotal) {
-
-        this.spendTimeTotal = spendTimeTotal;
+    public void setAllReqCount(AtomicLong allReqCount) {
+        this.allReqCount = allReqCount;
     }
 
     public int getAvgSpendTime() {
-
         return avgSpendTime;
     }
 
     public void setAvgSpendTime(int avgSpendTime) {
-
         this.avgSpendTime = avgSpendTime;
     }
 
-    public int getProviderThread() {
-
-        return providerThread;
+    public AtomicLong getAllSpendTimeTotal() {
+        return allSpendTimeTotal;
     }
 
-    public void setProviderThread(int providerThread) {
-
-        this.providerThread = providerThread;
+    public void setAllSpendTimeTotal(AtomicLong allSpendTimeTotal) {
+        this.allSpendTimeTotal = allSpendTimeTotal;
     }
 
+    public AtomicLong getAllActiveCount() {
+        return allActiveCount;
+    }
+
+    public void setAllActiveCount(AtomicLong allActiveCount) {
+        this.allActiveCount = allActiveCount;
+    }
 }
