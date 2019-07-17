@@ -8,6 +8,10 @@ import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.Result;
 import org.apache.dubbo.rpc.RpcException;
 
+/**
+* @Author 阿里巴巴金融核心 -- 布玮
+*/
+
 @Activate(group = Constants.PROVIDER)
 public class TestServerFilter implements Filter {
     @Override
