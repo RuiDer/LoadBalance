@@ -14,13 +14,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author daofeng.xjf
- * <p>
- * 服务端回调服务
- * 可选接口
- * 用户可以基于此服务，实现服务端向客户端动态推送的功能
- */
 public class CallbackServiceImpl implements CallbackService {
 
     public CallbackServiceImpl() {
@@ -55,8 +48,7 @@ public class CallbackServiceImpl implements CallbackService {
     @Override
     public void addListener(String key, CallbackListener listener) {
         listeners.put(key, listener);
-
-        listener.receiveServerMsg(getNotifyStr()); // send notification for change
+        listener.receiveServerMsg(getNotifyStr());
     }
 
     public String getNotifyStr() {
@@ -72,25 +64,10 @@ public class CallbackServiceImpl implements CallbackService {
         if (reqCount != 0) {
             avgTime = spendTimeTotal / reqCount;
         }
-        // 环境,线程总数,活跃线程数,平均耗时
-//        String notifyStr = String.format("%s,%s,%s,%s,%s",
-//            env,
-//            providerThread,
-//            activeCount,
-//            avgTime,
-//            reqCount);
         StringBuilder notifyStr = new StringBuilder();
         notifyStr.append(env).append(",").append(providerThread).append(",").append(activeCount).append(",").append(avgTime).append(",").append(reqCount);
 
         return notifyStr.toString();
     }
 
-//    private String getSystemLoadInfo(){
-//        OperatingSystemMXBean system = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-//        double systemLoadAvg = system.getSystemCpuLoad();
-//        double processCpuLoad = system.getProcessCpuLoad();
-//        long totalMem = system.getTotalPhysicalMemorySize();
-//        long freeMem =  system.getFreePhysicalMemorySize();
-//        return "freeMem:"+freeMem+",systemLoadAvg:"+systemLoadAvg+",processCpuLoad:"+processCpuLoad;
-//    }
 }

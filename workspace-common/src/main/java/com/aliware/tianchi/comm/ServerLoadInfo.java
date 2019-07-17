@@ -2,35 +2,22 @@ package com.aliware.tianchi.comm;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * @desc: <服务端负载信息>
- * @author: KANBO
- * @date:2019年6月22日 下午1:37:53
- */
 public class ServerLoadInfo {
 
     private String quota = null;
-    // 等于服务端线程数量
     private int providerThread = 0;
-    // 权重
     private volatile int weight = 0;
-    // 请求总数(上一秒)
     private AtomicLong reqCount = new AtomicLong(0);
-    // 当前任务数量
     private AtomicLong activeCount = new AtomicLong(0);
-    // 总耗时(上一秒)
     private AtomicLong spendTimeTotal = new AtomicLong(0);
     private volatile int avgSpendTime;
 
     public ServerLoadInfo() {
-
     }
 
     public ServerLoadInfo(String quota, int providerThread) {
         this.quota = quota;
-        //this.providerThread = providerThread;
         this.providerThread = (int) (providerThread * 0.9);
-//        this.weight = this.providerThread;
         if ("small".equals(quota)) {
             this.weight = 2;
         } else if ("medium".equals(quota)) {
