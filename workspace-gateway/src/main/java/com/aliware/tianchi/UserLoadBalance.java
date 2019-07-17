@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author 布玮
+ * @author 阿里巴巴金融核心 -- 布玮
  */
 public class UserLoadBalance implements LoadBalance {
 
