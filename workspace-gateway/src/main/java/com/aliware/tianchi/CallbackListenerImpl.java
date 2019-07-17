@@ -13,7 +13,7 @@ public class CallbackListenerImpl implements CallbackListener {
 
     @Override
     public void receiveServerMsg(String msg) {
-        UserLoadBalanceService.putLoadInfo(msg);
+        CustomerInfoManager.putLoadInfo(msg);
     }
 
 }

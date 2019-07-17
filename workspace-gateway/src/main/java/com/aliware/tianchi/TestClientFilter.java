@@ -17,7 +17,7 @@ public class TestClientFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
 
-        AtomicInteger availThread = UserLoadBalanceService.getAvailThread(invoker);
+        AtomicInteger availThread = CustomerInfoManager.getAvailThread(invoker);
         if (availThread == null) {
             return invoker.invoke(invocation);
         }

@@ -6,7 +6,7 @@ import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.RpcException;
 import org.apache.dubbo.rpc.cluster.LoadBalance;
 
-import com.aliware.tianchi.comm.ServerLoadInfo;
+import com.aliware.tianchi.comm.CustomerInfo;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -24,25 +24,19 @@ public class UserLoadBalance implements LoadBalance {
         invoker = invoker != null ? invoker : doSelectWithWeigth(invokers);
 
         return invoker;
-
-
     }
 
     /**
      * 落实优先每个机器都有流量请求
-     *
-     * @param invokers
-     * @param <T>
-     * @return
      */
     private <T> Invoker<T> doSelectInFreeInvokers(List<Invoker<T>> invokers) {
 
-        if (UserLoadBalanceService.LOAD_INFO.size() < invokers.size()) {
+        if (CustomerInfoManager.LOAD_INFO.size() < invokers.size()) {
             for (Invoker invoker : invokers) {
 
-                ServerLoadInfo serverLoadInfo = UserLoadBalanceService.getServerLoadInfo(invoker);
+                CustomerInfo customerInfo = CustomerInfoManager.getServerLoadInfo(invoker);
 
-                if (serverLoadInfo != null) break;
+                if (customerInfo != null) break;
 
                 return invoker;
             }
@@ -53,10 +47,6 @@ public class UserLoadBalance implements LoadBalance {
 
     /**
      * 根据服务端配置和平均耗时计算权重
-     *
-     * @param invokers
-     * @param <T>
-     * @return
      */
     private <T> Invoker<T> doSelectWithWeigth(List<Invoker<T>> invokers) {
 
@@ -71,17 +61,15 @@ public class UserLoadBalance implements LoadBalance {
 
             Invoker<T> invoker = invokers.get(index);
 
-            ServerLoadInfo serverLoadInfo = UserLoadBalanceService.getServerLoadInfo(invoker);
-            AtomicInteger availThreadAtomic = UserLoadBalanceService.getAvailThread(invoker);
+            CustomerInfo customerInfo = CustomerInfoManager.getServerLoadInfo(invoker);
+            AtomicInteger availThreadAtomic = CustomerInfoManager.getAvailThread(invoker);
 
-            if (serverLoadInfo != null) {
+            if (customerInfo != null) {
 
-                int availthread = availThreadAtomic.get();
-
-                if (availthread > 0) {
-                    int weight = serverLoadInfo.getWeight();
+                if (availThreadAtomic.get() > 0) {
+                    int weight = customerInfo.getWeight();
                     //根据耗时重新计算权重(基本权重*(1秒/单个请求耗时))
-                    int clientTimeAvgSpendCurr = serverLoadInfo.getAvgSpendTime();
+                    int clientTimeAvgSpendCurr = customerInfo.getAvgSpendTime();
                     if (clientTimeAvgSpendCurr == 0) {
                         // 耗时为0，性能优，请求直接打到该机器
                         // 也有可能是性能差，采用随机

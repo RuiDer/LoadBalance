@@ -2,7 +2,7 @@ package com.aliware.tianchi.comm;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ServerLoadInfo {
+public class CustomerInfo {
 
     private String quota = null;
     private int providerThread = 0;
@@ -12,18 +12,18 @@ public class ServerLoadInfo {
     private AtomicLong spendTimeTotal = new AtomicLong(0);
     private volatile int avgSpendTime;
 
-    public ServerLoadInfo() {
+    public CustomerInfo() {
     }
 
-    public ServerLoadInfo(String quota, int providerThread) {
+    public CustomerInfo(String quota, int providerThread) {
         this.quota = quota;
         this.providerThread = (int) (providerThread * 0.9);
         if ("small".equals(quota)) {
-            this.weight = 2;
+            this.weight = 4;
         } else if ("medium".equals(quota)) {
-            this.weight = 5;
+            this.weight = 9;
         } else if ("large".equals(quota)) {
-            this.weight = 8;
+            this.weight = 13;
         } else {
             this.weight = 1;
         }

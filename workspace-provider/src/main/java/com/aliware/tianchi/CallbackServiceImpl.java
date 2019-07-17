@@ -6,7 +6,7 @@ import org.apache.dubbo.config.context.ConfigManager;
 import org.apache.dubbo.rpc.listener.CallbackListener;
 import org.apache.dubbo.rpc.service.CallbackService;
 
-import com.aliware.tianchi.comm.ServerLoadInfo;
+import com.aliware.tianchi.comm.CustomerInfo;
 
 import java.util.Map;
 import java.util.Optional;
@@ -52,14 +52,13 @@ public class CallbackServiceImpl implements CallbackService {
     }
 
     public String getNotifyStr() {
-        // todo 协议和线程数的关系
         Optional<ProtocolConfig> protocolConfig = ConfigManager.getInstance().getProtocol(Constants.DUBBO_PROTOCOL);
         int providerThread = protocolConfig.get().getThreads();
         String env = System.getProperty("quota");
-        ServerLoadInfo serverLoadInfo = ProvaderLoadService.getServerLoadInfo();
-        long activeCount = serverLoadInfo.getActiveCount().get();
-        long spendTimeTotal = serverLoadInfo.getSpendTimeTotal().get();
-        long reqCount = serverLoadInfo.getReqCount().get();
+        CustomerInfo customerInfo = ProvaderLoadService.getServerLoadInfo();
+        long activeCount = customerInfo.getActiveCount().get();
+        long spendTimeTotal = customerInfo.getSpendTimeTotal().get();
+        long reqCount = customerInfo.getReqCount().get();
         long avgTime = 0;
         if (reqCount != 0) {
             avgTime = spendTimeTotal / reqCount;

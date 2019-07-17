@@ -1,12 +1,12 @@
 package com.aliware.tianchi;
 
-import com.aliware.tianchi.comm.ServerLoadInfo;
+import com.aliware.tianchi.comm.CustomerInfo;
 
 
 public class ProvaderLoadService {
 
     // key host.methodName value 
-    private static final ServerLoadInfo SERVER_LOAD_INFO = new ServerLoadInfo();
+    private static final CustomerInfo SERVER_LOAD_INFO = new CustomerInfo();
 
     public static void start() {
         SERVER_LOAD_INFO.getActiveCount().incrementAndGet();
@@ -23,7 +23,7 @@ public class ProvaderLoadService {
 //        }
     }
 
-    public static ServerLoadInfo getServerLoadInfo() {
+    public static CustomerInfo getServerLoadInfo() {
 
         return SERVER_LOAD_INFO;
     }
