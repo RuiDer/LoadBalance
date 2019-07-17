@@ -2,7 +2,9 @@ package com.aliware.tianchi;
 
 import com.aliware.tianchi.comm.CustomerInfo;
 
-
+/**
+* @Author 阿里巴巴金融核心 -- 布玮
+*/
 public class ProviderManager {
 
     private static final CustomerInfo SERVER_INFO = new CustomerInfo();
