@@ -27,9 +27,9 @@ public class CallbackServiceImpl implements CallbackService {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                
+
                 String notifyStr = getNotifyStr();
-                
+
                 if (!listeners.isEmpty()) {
                     for (Map.Entry<String, CallbackListener> entry : listeners.entrySet()) {
                         try {
@@ -55,12 +55,12 @@ public class CallbackServiceImpl implements CallbackService {
     @Override
     public void addListener(String key, CallbackListener listener) {
         listeners.put(key, listener);
-        
+
         listener.receiveServerMsg(getNotifyStr()); // send notification for change
     }
-    
-    public String getNotifyStr(){
-        
+
+    public String getNotifyStr() {
+        // todo 协议和线程数的关系
         Optional<ProtocolConfig> protocolConfig = ConfigManager.getInstance().getProtocol(Constants.DUBBO_PROTOCOL);
         int providerThread = protocolConfig.get().getThreads();
         String env = System.getProperty("quota");
@@ -69,20 +69,22 @@ public class CallbackServiceImpl implements CallbackService {
         long spendTimeTotal = serverLoadInfo.getSpendTimeTotal().get();
         long reqCount = serverLoadInfo.getReqCount().get();
         long avgTime = 0;
-        if(reqCount  != 0){
-            avgTime = spendTimeTotal/reqCount;
+        if (reqCount != 0) {
+            avgTime = spendTimeTotal / reqCount;
         }
         // 环境,线程总数,活跃线程数,平均耗时
-        String notifyStr = String.format("%s,%s,%s,%s,%s", 
-            env,
-            providerThread,
-            activeCount,
-            avgTime,
-            reqCount);
-        
-        return notifyStr;
+//        String notifyStr = String.format("%s,%s,%s,%s,%s",
+//            env,
+//            providerThread,
+//            activeCount,
+//            avgTime,
+//            reqCount);
+        StringBuilder notifyStr = new StringBuilder();
+        notifyStr.append(env).append(",").append(providerThread).append(",").append(activeCount).append(",").append(avgTime).append(",").append(reqCount);
+
+        return notifyStr.toString();
     }
-    
+
 //    private String getSystemLoadInfo(){
 //        OperatingSystemMXBean system = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 //        double systemLoadAvg = system.getSystemCpuLoad();
