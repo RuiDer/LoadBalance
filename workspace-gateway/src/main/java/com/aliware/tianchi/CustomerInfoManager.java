@@ -9,7 +9,7 @@ import org.apache.dubbo.rpc.Invoker;
 import com.aliware.tianchi.comm.CustomerInfo;
 
 /**
- * @author 布玮
+ * @author 阿里巴巴金融核心 -- 布玮
  */
 public class CustomerInfoManager {
 
