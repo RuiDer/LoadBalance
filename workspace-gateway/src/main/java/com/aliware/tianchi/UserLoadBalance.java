@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author 布玮
+ */
 public class UserLoadBalance implements LoadBalance {
 
     @Override
@@ -50,14 +53,14 @@ public class UserLoadBalance implements LoadBalance {
      */
     private <T> Invoker<T> doSelectWithWeigth(List<Invoker<T>> invokers) {
 
-        // 总权重
-        int totalWeight = 0;
-
         // 重新分配权重的<服务,权重>映射
         int[] serviceWeight = new int[invokers.size()];
 
+        // 总权重
+        int totalWeight = 0;
+
         // 1、计算总权重
-        for (int index = 0, size = invokers.size(); index < size; index++) {
+        for (int index = 0, size = invokers.size(); index < size; ++index) {
 
             Invoker<T> invoker = invokers.get(index);
 
@@ -67,7 +70,7 @@ public class UserLoadBalance implements LoadBalance {
             if (customerInfo != null) {
 
                 if (availThreadAtomic.get() > 0) {
-                    int weight = customerInfo.getWeight();
+                    int weight = customerInfo.getServerWeight();
                     //根据耗时重新计算权重(基本权重*(1秒/单个请求耗时))
                     int clientTimeAvgSpendCurr = customerInfo.getAvgSpendTime();
                     if (clientTimeAvgSpendCurr == 0) {
@@ -85,11 +88,11 @@ public class UserLoadBalance implements LoadBalance {
         }
 
         // 2、按照新的权重选择服务，权重加权随机算法
-        int offsetWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+        int oneWeight = ThreadLocalRandom.current().nextInt(totalWeight);
 
-        for (int i = 0; i < invokers.size(); ++i) {
-            offsetWeight -= serviceWeight[i];
-            if (offsetWeight < 0) {
+        for (int i = 0, size = invokers.size(); i < size; ++i) {
+            oneWeight -= serviceWeight[i];
+            if (oneWeight < 0) {
                 return invokers.get(i);
             }
         }

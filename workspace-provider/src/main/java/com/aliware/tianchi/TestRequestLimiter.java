@@ -3,8 +3,7 @@ package com.aliware.tianchi;
 import org.apache.dubbo.remoting.exchange.Request;
 import org.apache.dubbo.remoting.transport.RequestLimiter;
 
-/**
- * @author daofeng.xjf
+/**@author 布玮
  *
  * 服务端限流
  * 可选接口
@@ -20,7 +19,6 @@ public class TestRequestLimiter implements RequestLimiter {
      */
     @Override
     public boolean tryAcquire(Request request, int activeTaskCount) {
-        
         return true;
     }
 

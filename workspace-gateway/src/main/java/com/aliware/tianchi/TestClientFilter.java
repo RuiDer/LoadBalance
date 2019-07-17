@@ -11,6 +11,9 @@ import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.Result;
 import org.apache.dubbo.rpc.RpcException;
 
+/**
+ * @author 布玮
+ */
 @Activate(group = Constants.CONSUMER)
 public class TestClientFilter implements Filter {
 
@@ -21,13 +24,11 @@ public class TestClientFilter implements Filter {
         if (availThread == null) {
             return invoker.invoke(invocation);
         }
-        //并发数-1
         availThread.decrementAndGet();
         Result result = invoker.invoke(invocation);
         if (result instanceof AsyncRpcResult) {
             AsyncRpcResult asyncResult = (AsyncRpcResult) result;
             asyncResult.getResultFuture().whenComplete((actual, t) -> {
-                // 服务端可用线程数+1
                 availThread.incrementAndGet();
             });
         }

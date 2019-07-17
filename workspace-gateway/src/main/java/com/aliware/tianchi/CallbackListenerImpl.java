@@ -3,7 +3,7 @@ package com.aliware.tianchi;
 import org.apache.dubbo.rpc.listener.CallbackListener;
 
 /**
- * @author daofeng.xjf
+ * @author 布玮
  * <p>
  * 客户端监听器
  * 可选接口
@@ -13,7 +13,7 @@ public class CallbackListenerImpl implements CallbackListener {
 
     @Override
     public void receiveServerMsg(String msg) {
-        CustomerInfoManager.putLoadInfo(msg);
+        CustomerInfoManager.updateInfo(msg);
     }
 
 }

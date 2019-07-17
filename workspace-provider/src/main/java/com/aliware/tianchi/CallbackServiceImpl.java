@@ -14,24 +14,43 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author 布玮
+ */
 public class CallbackServiceImpl implements CallbackService {
+
+    private String getInfo() {
+        CustomerInfo customerInfo = ProviderManager.getServerInfo();
+        Optional<ProtocolConfig> protocolConfig = ConfigManager.getInstance().getProtocol(Constants.DUBBO_PROTOCOL);
+        String env = System.getProperty("quota");
+        int providerThread = protocolConfig.get().getThreads();
+        long allSpendTimeTotal = customerInfo.getAllSpendTimeTotal().get();
+        long allReqCount = customerInfo.getAllReqCount().get();
+        long allAvgTime = 0;
+        long allActiveCount = customerInfo.getAllActiveCount().get();
+        if (allReqCount != 0) {
+            allAvgTime = allSpendTimeTotal / allReqCount;
+        }
+        StringBuilder info = new StringBuilder();
+        info.append(env).append(",").append(providerThread).append(",").append(allActiveCount).append(",").append(allAvgTime).append(",").append(allReqCount);
+
+        return info.toString();
+    }
 
     public CallbackServiceImpl() {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
 
-                String notifyStr = getNotifyStr();
-
                 if (!listeners.isEmpty()) {
                     for (Map.Entry<String, CallbackListener> entry : listeners.entrySet()) {
                         try {
-                            entry.getValue().receiveServerMsg(notifyStr);
+                            entry.getValue().receiveServerMsg(getInfo());
                         } catch (Throwable t1) {
                             listeners.remove(entry.getKey());
                         }
                     }
-                    ProviderManager.resetSpendTime();
+                    ProviderManager.resetTime();
                 }
             }
         }, 0, 1000);
@@ -48,25 +67,7 @@ public class CallbackServiceImpl implements CallbackService {
     @Override
     public void addListener(String key, CallbackListener listener) {
         listeners.put(key, listener);
-        listener.receiveServerMsg(getNotifyStr());
-    }
-
-    public String getNotifyStr() {
-        Optional<ProtocolConfig> protocolConfig = ConfigManager.getInstance().getProtocol(Constants.DUBBO_PROTOCOL);
-        int providerThread = protocolConfig.get().getThreads();
-        String env = System.getProperty("quota");
-        CustomerInfo customerInfo = ProviderManager.getServerLoadInfo();
-        long activeCount = customerInfo.getActiveCount().get();
-        long spendTimeTotal = customerInfo.getSpendTimeTotal().get();
-        long reqCount = customerInfo.getReqCount().get();
-        long avgTime = 0;
-        if (reqCount != 0) {
-            avgTime = spendTimeTotal / reqCount;
-        }
-        StringBuilder notifyStr = new StringBuilder();
-        notifyStr.append(env).append(",").append(providerThread).append(",").append(activeCount).append(",").append(avgTime).append(",").append(reqCount);
-
-        return notifyStr.toString();
+        listener.receiveServerMsg(getInfo());
     }
 
 }

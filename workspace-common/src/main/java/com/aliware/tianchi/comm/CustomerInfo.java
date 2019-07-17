@@ -6,12 +6,11 @@ public class CustomerInfo {
 
     private String env = null;
     private volatile int serverWeight = 0;
+    private volatile int avgSpendTime;
     private int providerAllThreads = 0;
     private AtomicLong allReqCount = new AtomicLong(0);
-    private volatile int avgSpendTime;
     private AtomicLong allSpendTimeTotal = new AtomicLong(0);
     private AtomicLong allActiveCount = new AtomicLong(0);
-
 
     public CustomerInfo() {
     }
@@ -20,35 +19,12 @@ public class CustomerInfo {
         this.env = env;
         this.providerAllThreads = (int) (providerThread * 0.9);
         if ("large".equals(env)) {
-            this.serverWeight = 13;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        else if ("medium".equals(env)) {
+            this.serverWeight = 15;
+        } else if ("medium".equals(env)) {
             this.serverWeight = 9;
         } else if ("small".equals(env)) {
-            this.serverWeight = 4;
-        }
-        else {
+            this.serverWeight = 2;
+        } else {
             this.serverWeight = 1;
         }
     }

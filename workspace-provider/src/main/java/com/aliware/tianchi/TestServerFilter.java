@@ -16,14 +16,14 @@ public class TestServerFilter implements Filter {
         boolean isSuccess = false;
         long begin = System.currentTimeMillis();
         try {
-            ProviderManager.start();
+            ProviderManager.startTime();
             Result result = invoker.invoke(invocation);
             isSuccess = true;
             return result;
         } catch (Exception e) {
             throw e;
         } finally {
-            ProviderManager.end(System.currentTimeMillis() - begin, isSuccess);
+            ProviderManager.endTime(System.currentTimeMillis() - begin, isSuccess);
         }
 
     }
