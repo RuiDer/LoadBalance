@@ -15,7 +15,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author 布玮
+ * @author 阿里巴巴金融核心 -- 布玮
  */
 public class CallbackServiceImpl implements CallbackService {
 
