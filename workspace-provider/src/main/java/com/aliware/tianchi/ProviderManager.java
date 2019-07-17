@@ -3,9 +3,8 @@ package com.aliware.tianchi;
 import com.aliware.tianchi.comm.CustomerInfo;
 
 
-public class ProvaderLoadService {
+public class ProviderManager {
 
-    // key host.methodName value 
     private static final CustomerInfo SERVER_LOAD_INFO = new CustomerInfo();
 
     public static void start() {
@@ -16,11 +15,6 @@ public class ProvaderLoadService {
         SERVER_LOAD_INFO.getActiveCount().decrementAndGet();
         SERVER_LOAD_INFO.getReqCount().incrementAndGet();
         SERVER_LOAD_INFO.getSpendTimeTotal().addAndGet(expend);
-//        if(succeeded){
-//            SERVER_LOAD_INFO.getReqSuccCount().incrementAndGet();
-//        }else{
-//            SERVER_LOAD_INFO.getReqFailCount().incrementAndGet();
-//        }
     }
 
     public static CustomerInfo getServerLoadInfo() {

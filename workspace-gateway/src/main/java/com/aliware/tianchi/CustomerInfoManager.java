@@ -26,7 +26,6 @@ public class CustomerInfoManager {
 
         String[] severLoadArr = notiftStr.split(",");
 
-        // 环境,线程总数,活跃线程数,平均耗时
         String quota = severLoadArr[0];
         int providerThread = Integer.valueOf(severLoadArr[1]);
         int activeCount = Integer.valueOf(severLoadArr[2]);

@@ -31,7 +31,7 @@ public class CallbackServiceImpl implements CallbackService {
                             listeners.remove(entry.getKey());
                         }
                     }
-                    ProvaderLoadService.resetSpendTime();
+                    ProviderManager.resetSpendTime();
                 }
             }
         }, 0, 1000);
@@ -55,7 +55,7 @@ public class CallbackServiceImpl implements CallbackService {
         Optional<ProtocolConfig> protocolConfig = ConfigManager.getInstance().getProtocol(Constants.DUBBO_PROTOCOL);
         int providerThread = protocolConfig.get().getThreads();
         String env = System.getProperty("quota");
-        CustomerInfo customerInfo = ProvaderLoadService.getServerLoadInfo();
+        CustomerInfo customerInfo = ProviderManager.getServerLoadInfo();
         long activeCount = customerInfo.getActiveCount().get();
         long spendTimeTotal = customerInfo.getSpendTimeTotal().get();
         long reqCount = customerInfo.getReqCount().get();
