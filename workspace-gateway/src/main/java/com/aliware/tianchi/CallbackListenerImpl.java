@@ -3,7 +3,7 @@ package com.aliware.tianchi;
 import org.apache.dubbo.rpc.listener.CallbackListener;
 
 /**
- * @author 布玮
+ * @author 阿里巴巴金融核心 -- 布玮
  * <p>
  * 客户端监听器
  * 可选接口
