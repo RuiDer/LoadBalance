@@ -2,6 +2,9 @@ package com.aliware.tianchi.comm;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+*  @Author 阿里巴巴金融核心 -- 布玮
+*/
 public class CustomerInfo {
 
     private String env = null;
